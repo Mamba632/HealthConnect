@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Consult Doctor - HealthConnect</title>
+    <link rel="stylesheet" href="health.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .doctor-hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            transform: scale(1.1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+            z-index: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s ease-in-out;
+        }
+
+        .slide.active img {
+            transform: scale(1.1);
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 2;
+            width: 90%;
+            max-width: 800px;
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(20px);
+            transition: all 1s ease-in-out;
+        }
+
+        .slide.active .slide-content {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(0);
+        }
+
+        .slide-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Playfair Display', serif;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .slide-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #1a237e;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            border-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 3;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-arrow.prev {
+            left: 30px;
+        }
+
+        .slider-arrow.next {
+            right: 30px;
+        }
+
+        .slider-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 3;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .slider-dot:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .slide-content p {
+                font-size: 1.1rem;
+            }
+
+            .slider-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .slider-arrow.prev {
+                left: 15px;
+            }
+
+            .slider-arrow.next {
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/logo.png" alt="HealthConnect Logo">
+            <h1>HealthConnect</h1>
+        </div>
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav>
+            <ul class="navbar">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="Find Healthcare.html"><i class="fas fa-search"></i> Find Healthcare</a></li>
+                <li><a href="Self-Care Resources.html"><i class="fas fa-heart"></i> Self-Care Resources</a></li>
+                <li><a href="Doctor.html" class="active"><i class="fas fa-user-md"></i> Consult Doctor</a></li>
+                <li><a href="About us.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="Contact us.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="doctor-page">
+        <!-- Hero Section with Sliding Animation -->
+        <section class="doctor-hero">
+            <div class="slider">
+                <div class="slide active">
+                    <img src="images/doctor1.jpg" alt="Expert Medical Care">
+                    <div class="slide-content">
+                        <h1>Expert Medical Care</h1>
+                        <p>Connect with experienced healthcare professionals for personalized care and guidance.</p>
+                        <a href="#" class="btn btn-primary">Book Consultation</a>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="images/doctor2.jpg" alt="24/7 Healthcare Access">
+                    <div class="slide-content">
+                        <h1>24/7 Healthcare Access</h1>
+                        <p>Get medical assistance anytime, anywhere with our round-the-clock consultation services.</p>
+                        <a href="#" class="btn btn-primary">Find Doctor</a>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="images/doctor3.jpg" alt="Quality Healthcare">
+                    <div class="slide-content">
+                        <h1>Quality Healthcare</h1>
+                        <p>Experience world-class healthcare services with our network of certified medical professionals.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                <button class="slider-arrow prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-arrow next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="slider-nav">
+                    <span class="slider-dot active"></span>
+                    <span class="slider-dot"></span>
+                    <span class="slider-dot"></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About HealthConnect</h3>
+                    <p>Your trusted partner in healthcare, providing accessible and quality medical services to everyone.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Find Healthcare.html">Find Healthcare</a></li>
+                        <li><a href="Self-Care Resources.html">Self-Care Resources</a></li>
+                        <li><a href="Doctor.html">Consult Doctor</a></li>
+                        <li><a href="About us.html">About Us</a></li>
+                        <li><a href="Contact us.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Medical City</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@healthconnect.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="HealthConnect Logo">
+                    <p>&copy; 2024 HealthConnect. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Terms & Conditions</a>
+                    <span>|</span>
+                    <a href="#">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="#">Payment Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Mobile Navigation Toggle
+        const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+        const navbar = document.querySelector('.navbar');
+        
+        mobileNavToggle.addEventListener('click', () => {
+            navbar.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navbar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+                navbar.classList.remove('active');
+            }
+        });
+
+        // Slider functionality
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const prevBtn = document.querySelector('.slider-arrow.prev');
+        const nextBtn = document.querySelector('.slider-arrow.next');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+                slide.style.opacity = '0';
+            });
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            slides[index].style.opacity = '1';
+            dots[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function startSlideInterval() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopSlideInterval() {
+            clearInterval(slideInterval);
+        }
+
+        // Event listeners for navigation
+        nextBtn.addEventListener('click', () => {
+            stopSlideInterval();
+            nextSlide();
+            startSlideInterval();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            stopSlideInterval();
+            prevSlide();
+            startSlideInterval();
+        });
+
+        // Event listeners for dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                stopSlideInterval();
+                currentSlide = index;
+                showSlide(currentSlide);
+                startSlideInterval();
+            });
+        });
+
+        // Pause slider on hover
+        const slider = document.querySelector('.slider');
+        slider.addEventListener('mouseenter', stopSlideInterval);
+        slider.addEventListener('mouseleave', startSlideInterval);
+
+        // Start the slider
+        startSlideInterval();
+    </script>
+</body>
+
+</html>

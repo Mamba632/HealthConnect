@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - HealthGuard</title>
+    <link rel="stylesheet" href="health.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .about-hero {
+            height: 60vh;
+            background: linear-gradient(rgba(26, 35, 126, 0.8), rgba(13, 71, 161, 0.8)), url('images/about-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .story-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .story-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .story-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .story-content p {
+            color: var(--light-text);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-image {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mission-section {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+
+        .mission-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .mission-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .mission-content p {
+            color: var(--light-text);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .value-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .value-card p {
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        .team-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .team-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--light-text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-image {
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .member-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .member-info p {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .achievements-section {
+            padding: 5rem 2rem;
+            background: var(--background-light);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .achievement-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .achievement-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .achievement-text {
+            color: var(--light-text);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                height: 50vh;
+                margin-top: 60px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .story-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .story-image {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/logo.png" alt="HealthConnect Logo">
+            <h1>HealthGuard</h1>
+        </div>
+        <button class="mobile-nav-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav>
+            <ul class="navbar">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="Find Healthcare.html"><i class="fas fa-search"></i> Find Healthcare</a></li>
+                <li><a href="Self-Care Resources.html"><i class="fas fa-heart"></i> Self-Care Resources</a></li>
+                <li><a href="Doctor.html"><i class="fas fa-user-md"></i> Consult Doctor</a></li>
+                <li><a href="About us.html" class="active"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="Contact us.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-hero">
+            <div class="hero-content">
+                <h1>Our Story</h1>
+                <p>Transforming healthcare accessibility through innovation and compassion</p>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <div class="story-container">
+                <div class="story-content">
+                    <h2>Who We Are</h2>
+                    <p>HealthConnect was founded in 2020 with a vision to revolutionize healthcare accessibility. We recognized the growing challenges in healthcare delivery and set out to create a platform that connects patients with healthcare providers seamlessly.</p>
+                    <p>Today, we're proud to serve millions of users across the country, providing them with easy access to quality healthcare services, expert medical advice, and comprehensive health resources.</p>
+                </div>
+                <div class="story-image">
+                    <img src="images/about-story.jpg" alt="HealthConnect Story">
+                </div>
+            </div>
+        </section>
+
+        <section class="mission-section">
+            <div class="mission-container">
+                <div class="mission-content">
+                    <h2>Our Mission</h2>
+                    <p>To make quality healthcare accessible to everyone, everywhere, through innovative technology and compassionate service.</p>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Compassion</h3>
+                        <p>We care deeply about our users' health and well-being, treating each individual with empathy and respect.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Trust</h3>
+                        <p>We maintain the highest standards of security and confidentiality in all our operations.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Innovation</h3>
+                        <p>We continuously evolve and improve our services to meet the changing needs of our users.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Community</h3>
+                        <p>We foster a supportive healthcare community where everyone can thrive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <div class="team-container">
+                <div class="section-title">
+                    <h2>Our Leadership Team</h2>
+                    <p>Meet the dedicated professionals behind HealthConnect's success</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="images\6.jpg" alt="CEO">
+                        </div>
+                        <div class="member-info">
+                            <h3>Deepak Rodge</h3>
+                            <p>Coding</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="images\1.PNG" alt="CTO">
+                        </div>
+                        <div class="member-info">
+                            <h3>Manav Raval</h3>
+                            <p>Coding</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="images\5.jpg" alt="CMO">
+                        </div>
+                        <div class="member-info">
+                            <h3>Amit Pandey</h3>
+                            <p>PPT Maker</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="achievements-section">
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-number">5M+</div>
+                    <div class="achievement-text">Active Users</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-number">10K+</div>
+                    <div class="achievement-text">Healthcare Providers</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-number">24/7</div>
+                    <div class="achievement-text">Support Available</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-number">98%</div>
+                    <div class="achievement-text">User Satisfaction</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About HealthConnect</h3>
+                    <p>Your trusted partner in healthcare, providing accessible and quality medical services to everyone.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="Home.html">Home</a></li>
+                        <li><a href="Find Healthcare.html">Find Healthcare</a></li>
+                        <li><a href="Self-Care Resources.html">Self-Care Resources</a></li>
+                        <li><a href="Doctor.html">Consult Doctor</a></li>
+                        <li><a href="About us.html">About Us</a></li>
+                        <li><a href="Contact us.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Medical City</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@healthconnect.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="HealthConnect Logo">
+                    <p>&copy; 2024 HealthConnect. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Terms & Conditions</a>
+                    <span>|</span>
+                    <a href="#">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="#">Payment Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+        const navbar = document.querySelector('.navbar');
+        
+        mobileNavToggle.addEventListener('click', () => {
+            navbar.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navbar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+                navbar.classList.remove('active');
+            }
+        });
+
+        // Scroll to Top Button
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>

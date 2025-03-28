@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Request</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <img src="images\Logo.png" alt="Mayo Clinic Logo" class="logo">
+
+        <!-- Heading -->
+        <h1>Start your appointment request here.</h1>
+        <p class="subtitle">This is the easiest way to reach us.</p>
+
+        <!-- Options -->
+        <div class="options">
+            <div class="option" onclick="redirectTo('Find Healthcare.html')">
+                <div>
+                    <h2>Primary care</h2>
+                    <p>Provide you a hospital.</p>
+                </div>
+                <span class="arrow">›</span>
+            </div>
+
+            <div class="option" onclick="redirectTo('Self-Care Resources.html')">
+                <div>
+                    <h2>Self-Care</h2>
+                    <p>U can cure from home Remedies.</p>
+                </div>
+                <span class="arrow">›</span>
+            </div>
+            <div class="option" onclick="redirectTo('Self-Care Resources.html')">
+                <div>
+                    <h2>Video-call</h2>
+                    <p>If u do not want to go to hospital click here.</p>
+                </div>
+                <span class="arrow">›</span>
+            </div>
+            <div class="option" onclick="redirectTo('Contact us.html')">
+                <div class="icon-text">
+                    <span class="icon">👤</span>
+                    <div>
+                        <h2>Emergency care </h2>
+                        <p>Get to hospital as soon as possible pls click on it.</p>
+                    </div>
+                </div>
+                <span class="arrow">›</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="style.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+/* General Page Styling */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #E6EEF8;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container Styling */
+.container {
+    width: 60%;
+    max-width: 800px;
+}
+
+/* Logo Styling */
+.logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+/* Heading & Subtitle */
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Options Styling */
+.options {
+    margin-top: 30px;
+}
+
+.option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-top: 1px solid #ccc;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.option:last-child {
+    border-bottom: 1px solid #ccc;
+}
+
+.option:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Text */
+h2 {
+    font-size: 22px;
+    color: #0044AA;
+    margin: 0;
+}
+
+.option p {
+    font-size: 16px;
+    color: #555;
+    margin: 3px 0 0;
+}
+
+/* Arrow */
+.arrow {
+    font-size: 30px;
+    color: #0044AA;
+}
+
+/* Icon with text */
+.icon-text {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
