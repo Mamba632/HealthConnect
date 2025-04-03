@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Self-Care Resources - HealthConnect</title>
     <link rel="stylesheet" href="health.css">
+    <link rel="stylesheet" href="common.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .resources-hero {
-            height: 50vh;
-            background: linear-gradient(rgba(26, 35, 126, 0.8), rgba(13, 71, 161, 0.8)), url('images/resources-hero.jpg');
+            height: 70vh;
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.9), rgba(13, 71, 161, 0.9)), url('images/resources-hero.jpg');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -20,19 +21,102 @@
             text-align: center;
             color: white;
             margin-top: 70px;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .resources-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            animation: wave 8s linear infinite;
+            transform: translateX(-100%);
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-content h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-color);
         }
 
         .hero-content p {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             max-width: 600px;
             margin: 0 auto;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .hero-scroll-indicator i {
+            font-size: 2rem;
+            color: white;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* Add these variables to your root CSS */
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #0d47a1;
+            --accent-color: #ff4081;
+            --background-light: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --light-text: #666;
         }
 
         .search-section {
@@ -124,28 +208,48 @@
 
         .category-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
             cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: float 6s ease-in-out infinite;
         }
 
         .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .category-image {
-            height: 200px;
+            height: 250px;
             overflow: hidden;
+            position: relative;
+        }
+
+        .category-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+            transition: var(--transition);
+        }
+
+        .category-card:hover .category-image::after {
+            background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.8));
         }
 
         .category-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
         .category-card:hover .category-image img {
@@ -154,18 +258,63 @@
 
         .category-content {
             padding: 2rem;
+            position: relative;
+            background: white;
+            transform: translateZ(20px);
         }
 
         .category-content h3 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 1rem;
             color: var(--primary-color);
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            display: inline-block;
+        }
+
+        .category-content h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .category-card:hover .category-content h3::after {
+            width: 100%;
         }
 
         .category-content p {
             color: var(--light-text);
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .category-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            color: var(--light-text);
+        }
+
+        .category-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--background-light);
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .category-card:hover .category-stats span {
+            background: var(--primary-color);
+            color: white;
         }
 
         .category-link {
@@ -174,13 +323,39 @@
             gap: 0.5rem;
             color: var(--primary-color);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            background: var(--background-light);
+            border-radius: 30px;
             transition: var(--transition);
         }
 
         .category-link:hover {
-            color: var(--secondary-color);
+            background: var(--accent-color);
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .category-link i {
+            transition: var(--transition);
+        }
+
+        .category-link:hover i {
             transform: translateX(5px);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .articles-section {
@@ -205,6 +380,8 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            animation: slideIn 0.8s ease-out forwards;
+            opacity: 0;
         }
 
         .article-card:hover {
@@ -276,11 +453,12 @@
 
         .newsletter-section {
             padding: 5rem 2rem;
-            background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(13, 71, 161, 0.9)), url('images/newsletter-bg.jpg');
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.9), rgba(13, 71, 161, 0.9)), url('images/newsletter-bg.jpg');
             background-size: cover;
             background-position: center;
             color: white;
             text-align: center;
+            animation: pulse 10s ease-in-out infinite;
         }
 
         .newsletter-container {
@@ -429,32 +607,134 @@
 
         /* Video Section Styles */
         .videos-section {
-            padding: 2rem;
-            background-color: #f8f9fa;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--background-light) 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .videos-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%231a237e" fill-opacity="0.03"/></svg>');
+            background-size: 100px 100px;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .videos-section h2 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .videos-section p {
+            text-align: center;
+            color: var(--light-text);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            display: flex;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #eee;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+        }
+
+        .search-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.4);
         }
 
         .videos-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .video-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
         .video-card:hover {
-            transform: translateY(-5px);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         .video-thumbnail {
             position: relative;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%;
+            overflow: hidden;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7));
+            z-index: 1;
         }
 
         .video-thumbnail img {
@@ -464,125 +744,220 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.1);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            opacity: 0;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .video-card:hover .play-button {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button i {
+            color: white;
+            font-size: 1.5rem;
+            margin-left: 5px;
         }
 
         .video-duration {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 15px;
+            right: 15px;
             background: rgba(0,0,0,0.8);
             color: white;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 2;
         }
 
         .video-info {
-            padding: 1rem;
+            padding: 1.5rem;
         }
 
         .video-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         .video-channel {
-            color: #666;
-            font-size: 0.9rem;
+            color: var(--light-text);
+            font-size: 1rem;
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-channel i {
+            color: var(--accent-color);
         }
 
         .video-date {
             color: #888;
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
 
         .video-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            line-height: 1.4;
+            color: var(--light-text);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
 
         .watch-btn {
-            background: #007bff;
+            background: var(--accent-color);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+            margin: 0 auto;
         }
 
         .watch-btn:hover {
-            background: #0056b3;
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 35, 126, 0.3);
         }
 
         .watch-btn i {
-            margin-right: 5px;
+            transition: var(--transition);
         }
 
-        /* Video Modal Styles */
-        .video-modal {
-            position: fixed;
+        .watch-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Add wave-animation class to sections */
+        .resources-hero,
+        .search-section,
+        .categories-section,
+        .articles-section,
+        .videos-section,
+        .newsletter-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resources-hero::before,
+        .search-section::before,
+        .categories-section::before,
+        .articles-section::before,
+        .videos-section::before,
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            animation: wave 8s linear infinite;
+            transform: translateX(-100%);
         }
 
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
+        /* Add fade-in class to content */
+        .hero-content,
+        .search-container,
+        .categories-container,
+        .articles-container,
+        .videos-container,
+        .newsletter-container {
+            animation: fadeIn 1s ease-out;
         }
 
-        .close-modal {
-            position: absolute;
-            top: -30px;
-            right: 0;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
+        /* New Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* Search Bar Styles */
-        .search-bar {
-            margin: 2rem 0;
-            display: flex;
-            gap: 1rem;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
-        .search-input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .search-btn {
-            padding: 0.8rem 1.5rem;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+        .category-card {
+            animation: float 6s ease-in-out infinite;
         }
 
-        .search-btn:hover {
-            background: #0056b3;
+        .category-card:nth-child(2n) {
+            animation-delay: 0.5s;
+        }
+
+        .category-card:nth-child(3n) {
+            animation-delay: 1s;
+        }
+
+        .article-card {
+            animation: slideIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .article-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .article-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .video-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .newsletter-section {
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.9), rgba(13, 71, 161, 0.9)), url('images/newsletter-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: pulse 10s ease-in-out infinite;
         }
     </style>
 </head>
@@ -616,17 +991,6 @@
             </div>
         </section>
 
-        <section class="search-section">
-            <div class="search-container">
-                <form class="search-form">
-                    <input type="text" class="search-input" placeholder="Search for health topics, articles, or tips...">
-                    <button type="submit" class="search-btn">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </form>
-            </div>
-        </section>
-
         <section class="categories-section">
             <div class="categories-container">
                 <div class="section-title">
@@ -656,7 +1020,6 @@
                             <p>Home remedies, symptom management, and when to see a doctor.</p>
                             <div class="category-stats">
                                 <span><i class="fas fa-book"></i> 15 Articles</span>
-                                <span><i class="fas fa-video"></i> 8 Videos</span>
                             </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
@@ -673,7 +1036,6 @@
                             <p>Treatment guides for common skin conditions and care tips.</p>
                             <div class="category-stats">
                                 <span><i class="fas fa-book"></i> 12 Articles</span>
-                                <span><i class="fas fa-video"></i> 6 Videos</span>
                             </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
@@ -691,7 +1053,6 @@
                             <p>Management tips, diet plans, and lifestyle recommendations.</p>
                             <div class="category-stats">
                                 <span><i class="fas fa-book"></i> 20 Articles</span>
-                                <span><i class="fas fa-video"></i> 10 Videos</span>
                             </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
@@ -708,7 +1069,6 @@
                             <p>Blood pressure management and heart health resources.</p>
                             <div class="category-stats">
                                 <span><i class="fas fa-book"></i> 18 Articles</span>
-                                <span><i class="fas fa-video"></i> 9 Videos</span>
                             </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
@@ -726,7 +1086,6 @@
                             <p>Coping strategies and mental health support resources.</p>
                             <div class="category-stats">
                                 <span><i class="fas fa-book"></i> 25 Articles</span>
-                                <span><i class="fas fa-video"></i> 12 Videos</span>
                             </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
@@ -743,7 +1102,6 @@
                             <p>Support resources and self-care strategies.</p>
                             <div class="category-stats">
                                 <span><i class="fas fa-book"></i> 22 Articles</span>
-                                <span><i class="fas fa-video"></i> 11 Videos</span>
                             </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
@@ -899,6 +1257,10 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Add config.js before other scripts -->
+    <script src="config.js"></script>
+    <!-- Add YouTube API Script before your custom scripts -->
+    <script src="https://apis.google.com/js/api.js"></script>
     <script>
         // Mobile Navigation Toggle
         const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
@@ -933,6 +1295,7 @@
             });
         });
 
+        // Category Search and Filter
         document.addEventListener('DOMContentLoaded', function() {
             const categorySearch = document.getElementById('categorySearch');
             const filterTags = document.querySelectorAll('.filter-tag');
@@ -955,9 +1318,7 @@
             // Filter tag functionality
             filterTags.forEach(tag => {
                 tag.addEventListener('click', function() {
-                    // Remove active class from all tags
                     filterTags.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tag
                     this.classList.add('active');
                     
                     const category = this.dataset.category;
@@ -970,30 +1331,126 @@
                     });
                 });
             });
+
+            // Initialize YouTube API
+            loadYouTubeAPI();
         });
 
-        // Search functionality
-        const searchInput = document.querySelector('.search-input');
-        const searchBtn = document.querySelector('.search-btn');
+        // YouTube API Integration
+        function initYouTubeAPI() {
+            gapi.client.init({
+                'apiKey': 'AIzaSyDPJQPXTVJkGXA_yTHd9YtcGBYPyJTOPXs',
+                'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
+            }).then(function() {
+                console.log('YouTube API initialized');
+                loadInitialVideos();
+            }).catch(function(error) {
+                console.error('Error initializing YouTube API:', error);
+            });
+        }
 
-        searchBtn.addEventListener('click', async () => {
-            const query = searchInput.value.trim();
-            if (query) {
-                const videos = await youtubeAPI.searchVideos(query);
-                displayVideos(videos, 'videos-container');
+        // Load the YouTube API
+        function loadYouTubeAPI() {
+            gapi.load('client', initYouTubeAPI);
+        }
+
+        // Function to search YouTube videos
+        async function searchYouTubeVideos(query) {
+            try {
+                const response = await gapi.client.youtube.search.list({
+                    part: 'snippet',
+                    maxResults: 6,
+                    q: query + ' health education',
+                    type: 'video'
+                });
+                return response.result.items;
+            } catch (error) {
+                console.error('Error searching YouTube videos:', error);
+                return [];
             }
-        });
+        }
 
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchBtn.click();
+        // Function to display videos
+        function displayVideos(videos) {
+            const container = document.getElementById('videos-container');
+            if (!container) {
+                console.error('Videos container not found');
+                return;
             }
-        });
+
+            container.innerHTML = '';
+
+            if (!videos || videos.length === 0) {
+                container.innerHTML = '<p>No videos found. Please try a different search.</p>';
+                return;
+            }
+
+            videos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">
+                        <img src="${video.snippet.thumbnails.high.url}" alt="${video.snippet.title}">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.snippet.title}</h3>
+                        <div class="video-channel">
+                            <i class="fas fa-user-circle"></i>
+                            ${video.snippet.channelTitle}
+                        </div>
+                        <p class="video-description">${video.snippet.description.substring(0, 100)}...</p>
+                        <a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank" class="watch-btn">
+                            Watch Now <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                `;
+                container.appendChild(videoCard);
+            });
+        }
 
         // Load initial videos
-        window.addEventListener('load', async () => {
-            const videos = await youtubeAPI.searchVideos('health education');
-            displayVideos(videos, 'videos-container');
+        async function loadInitialVideos() {
+            try {
+                const videos = await searchYouTubeVideos('health tips and wellness');
+                displayVideos(videos);
+            } catch (error) {
+                console.error('Error loading initial videos:', error);
+            }
+        }
+
+        // Handle video search
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoSearchForm = document.querySelector('.videos-section .search-bar');
+            if (videoSearchForm) {
+                const videoSearchInput = videoSearchForm.querySelector('.search-input');
+                const videoSearchBtn = videoSearchForm.querySelector('.search-btn');
+
+                videoSearchBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const query = videoSearchInput.value.trim();
+                    if (query) {
+                        try {
+                            const videos = await searchYouTubeVideos(query);
+                            displayVideos(videos);
+                        } catch (error) {
+                            console.error('Error searching videos:', error);
+                        }
+                    }
+                });
+
+                videoSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        videoSearchBtn.click();
+                    }
+                });
+            }
+
+            // Initialize YouTube API
+            loadYouTubeAPI();
         });
     </script>
 </body>

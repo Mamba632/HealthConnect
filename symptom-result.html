@@ -17,18 +17,6 @@
             overflow-x: hidden;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.8) 0%, transparent 50%);
-            z-index: -1;
-        }
-
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -165,14 +153,10 @@
 
 <body>
     <div class="container">
-        <!-- Logo -->
         <img src="images\Logo.png" alt="Mayo Clinic Logo" class="logo">
-
-        <!-- Heading -->
         <h1>Start your appointment request here.</h1>
         <p class="subtitle">This is the easiest way to reach us.</p>
 
-        <!-- Options -->
         <div class="options">
             <div class="option" onclick="redirectTo('Find Healthcare.html')">
                 <div>
@@ -189,6 +173,7 @@
                 </div>
                 <span class="arrow">›</span>
             </div>
+
             <div class="option" onclick="redirectTo('Self-Care Resources.html')">
                 <div>
                     <h2>Video-call</h2>
@@ -196,11 +181,12 @@
                 </div>
                 <span class="arrow">›</span>
             </div>
+
             <div class="option" onclick="redirectTo('Contact us.html')">
                 <div class="icon-text">
                     <span class="icon">👤</span>
                     <div>
-                        <h2>Emergency care </h2>
+                        <h2>Emergency care</h2>
                         <p>Get to hospital as soon as possible pls click on it.</p>
                     </div>
                 </div>
