@@ -344,6 +344,246 @@
                 flex-direction: column;
             }
         }
+
+        .category-filter {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .filter-input {
+            padding: 0.8rem 1rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .filter-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: #f5f5f5;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-tag:hover {
+            background: #e3f2fd;
+        }
+
+        .filter-tag.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .category-stats {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .category-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card .category-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .category-card .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover .category-image img {
+            transform: scale(1.1);
+        }
+
+        /* Video Section Styles */
+        .videos-section {
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+
+        .videos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .video-channel {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-date {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .watch-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .watch-btn:hover {
+            background: #0056b3;
+        }
+
+        .watch-btn i {
+            margin-right: 5px;
+        }
+
+        /* Video Modal Styles */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Search Bar Styles */
+        .search-bar {
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            padding: 0.8rem 1.5rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 
@@ -391,55 +631,120 @@
             <div class="categories-container">
                 <div class="section-title">
                     <h2>Health Categories</h2>
-                    <p>Explore our comprehensive collection of health resources and guides</p>
+                    <p>Find resources for specific health concerns and conditions</p>
                 </div>
+                
+                <!-- Category Search Filter -->
+                <div class="category-filter">
+                    <input type="text" id="categorySearch" placeholder="Search categories..." class="filter-input">
+                    <div class="filter-tags">
+                        <span class="filter-tag active" data-category="all">All</span>
+                        <span class="filter-tag" data-category="common">Common Issues</span>
+                        <span class="filter-tag" data-category="chronic">Chronic Conditions</span>
+                        <span class="filter-tag" data-category="mental">Mental Health</span>
+                    </div>
+                </div>
+
                 <div class="categories-grid">
-                    <div class="category-card">
+                    <!-- Common Health Issues -->
+                    <div class="category-card" data-category="common">
                         <div class="category-image">
-                            <img src="images/mental-health.jpg" alt="Mental Health">
+                            <img src="images/fever.jpg" alt="Fever & Cold">
                         </div>
                         <div class="category-content">
-                            <h3>Mental Health</h3>
-                            <p>Resources for stress management, anxiety, depression, and emotional well-being.</p>
+                            <h3>Fever & Cold</h3>
+                            <p>Home remedies, symptom management, and when to see a doctor.</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-book"></i> 15 Articles</span>
+                                <span><i class="fas fa-video"></i> 8 Videos</span>
+                            </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
 
-                    <div class="category-card">
+                    <div class="category-card" data-category="common">
                         <div class="category-image">
-                            <img src="images/physical-health.jpg" alt="Physical Health">
+                            <img src="images/skin.jpg" alt="Skin Issues">
                         </div>
                         <div class="category-content">
-                            <h3>Physical Health</h3>
-                            <p>Tips for exercise, nutrition, sleep, and maintaining a healthy lifestyle.</p>
+                            <h3>Skin Issues</h3>
+                            <p>Treatment guides for common skin conditions and care tips.</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-book"></i> 12 Articles</span>
+                                <span><i class="fas fa-video"></i> 6 Videos</span>
+                            </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
 
-                    <div class="category-card">
+                    <!-- Chronic Conditions -->
+                    <div class="category-card" data-category="chronic">
                         <div class="category-image">
-                            <img src="images/nutrition.jpg" alt="Nutrition">
+                            <img src="images/diabetes.jpg" alt="Diabetes">
                         </div>
                         <div class="category-content">
-                            <h3>Nutrition</h3>
-                            <p>Healthy eating guides, meal planning, and dietary recommendations.</p>
+                            <h3>Diabetes</h3>
+                            <p>Management tips, diet plans, and lifestyle recommendations.</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-book"></i> 20 Articles</span>
+                                <span><i class="fas fa-video"></i> 10 Videos</span>
+                            </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
 
-                    <div class="category-card">
+                    <div class="category-card" data-category="chronic">
                         <div class="category-image">
-                            <img src="images/fitness.jpg" alt="Fitness">
+                            <img src="images/hypertension.jpg" alt="Hypertension">
                         </div>
                         <div class="category-content">
-                            <h3>Fitness</h3>
-                            <p>Workout routines, exercise tips, and physical activity guidelines.</p>
+                            <h3>Hypertension</h3>
+                            <p>Blood pressure management and heart health resources.</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-book"></i> 18 Articles</span>
+                                <span><i class="fas fa-video"></i> 9 Videos</span>
+                            </div>
+                            <a href="#" class="category-link">
+                                Explore <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mental Health -->
+                    <div class="category-card" data-category="mental">
+                        <div class="category-image">
+                            <img src="images/anxiety.jpg" alt="Anxiety">
+                        </div>
+                        <div class="category-content">
+                            <h3>Anxiety</h3>
+                            <p>Coping strategies and mental health support resources.</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-book"></i> 25 Articles</span>
+                                <span><i class="fas fa-video"></i> 12 Videos</span>
+                            </div>
+                            <a href="#" class="category-link">
+                                Explore <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="category-card" data-category="mental">
+                        <div class="category-image">
+                            <img src="images/depression.jpg" alt="Depression">
+                        </div>
+                        <div class="category-content">
+                            <h3>Depression</h3>
+                            <p>Support resources and self-care strategies.</p>
+                            <div class="category-stats">
+                                <span><i class="fas fa-book"></i> 22 Articles</span>
+                                <span><i class="fas fa-video"></i> 11 Videos</span>
+                            </div>
                             <a href="#" class="category-link">
                                 Explore <i class="fas fa-arrow-right"></i>
                             </a>
@@ -520,6 +825,23 @@
                         <button type="submit" class="newsletter-btn">Subscribe</button>
                     </form>
                 </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="videos-section">
+            <h2>Health Education Videos</h2>
+            <p>Watch informative videos about various health topics</p>
+            
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search for health topics...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+
+            <div id="videos-container" class="videos-container">
+                <!-- Videos will be loaded here -->
             </div>
         </section>
     </main>
@@ -609,6 +931,69 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySearch = document.getElementById('categorySearch');
+            const filterTags = document.querySelectorAll('.filter-tag');
+            const categoryCards = document.querySelectorAll('.category-card');
+
+            // Search functionality
+            categorySearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                categoryCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // Filter tag functionality
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // Remove active class from all tags
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tag
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    categoryCards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        const searchBtn = document.querySelector('.search-btn');
+
+        searchBtn.addEventListener('click', async () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                const videos = await youtubeAPI.searchVideos(query);
+                displayVideos(videos, 'videos-container');
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Load initial videos
+        window.addEventListener('load', async () => {
+            const videos = await youtubeAPI.searchVideos('health education');
+            displayVideos(videos, 'videos-container');
         });
     </script>
 </body>

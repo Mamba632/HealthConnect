@@ -8,9 +8,27 @@
   <link rel="stylesheet" href="health.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="config for maps.js"></script>
+  <script>
+    // Verify API key is loaded
+    if (!API_KEY) {
+      console.error('Google Maps API key is not loaded. Please check config.js');
+    }
+    
+    function loadGoogleMaps() {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places,geometry&callback=initMap`;
+      script.async = true;
+      script.defer = true;
+      script.onerror = function() {
+        console.error('Failed to load Google Maps API. Please check your API key and billing status.');
+      };
+      document.head.appendChild(script);
+    }
+    loadGoogleMaps();
+  </script>
   <script src="script.js"></script>
-  <script src="config.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&callback=initMap" async defer></script>
+  <script src="maps.js"></script>
 
   <style>
     .search-hero {
@@ -129,111 +147,219 @@
     }
 
     .results-section {
-      padding: 2rem;
-      background: white;
+      padding: 4rem 2rem;
+      background: #f8f9fa;
     }
 
     .results-container {
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: #1a237e;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-title i {
+      color: #3949ab;
+    }
+
+    .results-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2rem;
     }
 
-    .results-list {
-      max-height: 600px;
-      overflow-y: auto;
-    }
-
-    .result-card {
+    .facility-card {
       background: white;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-      margin-bottom: 1rem;
-      transition: var(--transition);
-      cursor: pointer;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .result-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    .facility-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
 
-    .result-card.active {
-      border: 2px solid var(--primary-color);
+    .facility-image {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
     }
 
-    .result-header {
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
+    .facility-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .facility-card:hover .facility-image img {
+      transform: scale(1.05);
+    }
+
+    .facility-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      gap: 0.5rem;
     }
 
-    .result-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--primary-color);
-    }
-
-    .result-rating {
+    .status {
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .result-rating i {
-      color: #ffd700;
+    .status.open {
+      background: rgba(76, 175, 80, 0.9);
+      color: white;
     }
 
-    .result-content {
-      padding: 1rem;
+    .status.closed {
+      background: rgba(244, 67, 54, 0.9);
+      color: white;
     }
 
-    .result-info {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+    .distance {
+      background: rgba(255, 255, 255, 0.9);
+      color: #1a237e;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .facility-info {
+      padding: 1.5rem;
+    }
+
+    .facility-info h3 {
+      color: #1a237e;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
     }
 
-    .info-item {
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .info-row span {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: var(--light-text);
     }
 
-    .result-actions {
+    .facility-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      background: #e3f2fd;
+      color: #1a237e;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .tag.emergency {
+      background: #fce4ec;
+      color: #c2185b;
+    }
+
+    .address {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .facility-actions {
       display: flex;
       gap: 1rem;
     }
 
     .action-btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: var(--transition);
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 500;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
-    }
-
-    .view-btn {
-      background: var(--primary-color);
-      color: white;
+      transition: all 0.3s ease;
     }
 
     .book-btn {
-      background: var(--accent-color);
+      background: #1a237e;
       color: white;
     }
 
-    .action-btn:hover {
+    .book-btn:hover {
+      background: #283593;
       transform: translateY(-2px);
+    }
+
+    .directions-btn {
+      background: #e3f2fd;
+      color: #1a237e;
+    }
+
+    .directions-btn:hover {
+      background: #bbdefb;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .results-section {
+        padding: 2rem 1rem;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .facility-image {
+        height: 180px;
+      }
+
+      .facility-actions {
+        flex-direction: column;
+      }
     }
 
     .map-container {
@@ -293,6 +419,502 @@
         height: 400px;
       }
     }
+
+    .emergency-section {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 4rem 2rem;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .emergency-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .emergency-title {
+      color: #3f51b5;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .emergency-content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #ffffff;
+    }
+
+    .emergency-call-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #e53935;
+      color: #ffffff;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(229, 57, 53, 0.3);
+    }
+
+    .emergency-call-btn:hover {
+      background: #d32f2f;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
+    }
+
+    .emergency-call-btn i {
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .emergency-section {
+        padding: 3rem 1rem;
+      }
+
+      .emergency-title {
+        font-size: 2rem;
+      }
+
+      .emergency-content p {
+        font-size: 1.1rem;
+      }
+
+      .emergency-call-btn {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+      }
+    }
+
+    .map-section {
+      padding: 2rem;
+      background: #f8f9fa;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .map-container {
+      height: 600px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .map-overlay {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1;
+    }
+
+    .location-btn {
+      background: #ffffff;
+      color: #1a237e;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .location-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .hospital-list {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .hospital-card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #eee;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hospital-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .hospital-card.active {
+      border-color: #1a237e;
+      background: #f8f9fa;
+    }
+
+    .hospital-name {
+      font-weight: 600;
+      color: #1a237e;
+      margin-bottom: 0.5rem;
+    }
+
+    .hospital-info {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .distance-badge {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1a237e;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .hospital-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-open {
+      background: #4caf50;
+    }
+
+    .status-closed {
+      background: #f44336;
+    }
+
+    @media (max-width: 992px) {
+      .map-section {
+        grid-template-columns: 1fr;
+      }
+
+      .map-container {
+        height: 400px;
+      }
+
+      .hospital-list {
+        max-height: 400px;
+      }
+    }
+
+    .search-section {
+      padding: 2rem;
+      background: linear-gradient(to right, #f8f9fa, #e3f2fd);
+    }
+
+    .search-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: #f8f9fa;
+      border-radius: 50px;
+      padding: 0.5rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: #1a237e;
+      box-shadow: 0 0 0 4px rgba(26, 35, 126, 0.1);
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: none;
+      background: transparent;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .search-input:focus {
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: #999;
+    }
+
+    .search-btn {
+      background: #1a237e;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-btn:hover {
+      background: #283593;
+      transform: translateY(-2px);
+    }
+
+    .filters-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #666;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .filter-group label i {
+      color: #1a237e;
+    }
+
+    .filter-group select {
+      padding: 0.8rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      background: white;
+      color: #333;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+    }
+
+    .filter-group select:hover {
+      border-color: #1a237e;
+    }
+
+    .filter-group select:focus {
+      outline: none;
+      border-color: #1a237e;
+      box-shadow: 0 0 0 4px rgba(26, 35, 126, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .search-container {
+        padding: 1.5rem;
+      }
+
+      .search-box {
+        flex-direction: column;
+        border-radius: 15px;
+      }
+
+      .search-input {
+        padding: 0.8rem 1rem;
+      }
+
+      .search-btn {
+        width: 100%;
+      }
+
+      .filters-wrapper {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .location-prompt {
+      background: #e3f2fd;
+      color: #1a237e;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .location-prompt i {
+      color: #1a237e;
+    }
+
+    .hospital-specialties {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .specialty-tag {
+      background: #e3f2fd;
+      color: #1a237e;
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.85rem;
+    }
+
+    .hospital-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .directions-btn {
+      background: #1a237e;
+      color: white;
+    }
+
+    .call-btn {
+      background: #4caf50;
+      color: white;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .facilities-header {
+        background: #1a237e;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .facilities-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .facilities-header p {
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .top-facility {
+        border: 2px solid #1a237e;
+        background: #f8f9fa;
+        position: relative;
+    }
+
+    .top-badge {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1a237e;
+        color: white;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .emergency-badge {
+        background: #ffebee;
+        color: #c62828;
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .hospital-rating {
+        color: #f57f17;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .hospital-card {
+        transition: all 0.3s ease;
+    }
+
+    .hospital-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .top-facility:hover {
+        border-color: #3949ab;
+    }
   </style>
 </head>
 
@@ -332,47 +954,43 @@
     <section class="search-section">
       <div class="search-container">
         <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Enter disease or symptom..." class="search-bar">
+          <input type="text" placeholder="Search for hospitals by name..." class="search-input" id="hospitalSearch">
+          <button class="search-btn" onclick="searchHospital()">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
-        <button class="search-btn">
-          <i class="fas fa-search"></i> Search
-        </button>
-      </div>
-    </section>
-
-    <!-- Filters Section -->
-    <section class="filters-section">
-      <div class="filters-container">
-        <div class="filter-group">
-          <label><i class="fas fa-hospital"></i> Facility Type</label>
-          <select id="facilityFilter" onchange="filterResults()">
-            <option value="all">All Facilities</option>
-            <option value="hospital">Hospitals</option>
-            <option value="clinic">Clinics</option>
-            <option value="Specialists">Specialists</option>
-          </select>
+        <div class="location-prompt" id="locationPrompt">
+          <i class="fas fa-info-circle"></i>
+          Please click "Use My Location" first to find nearby hospitals
         </div>
-
-        <div class="filter-group">
-          <label><i class="fas fa-user-md"></i> Specialization</label>
-          <select id="specializationFilter" onchange="filterResults()">
-            <option value="all">All Specializations</option>
-            <option value="pediatrics">Pediatrics</option>
-            <option value="cardiology">Cardiology</option>
-            <option value="neurology">Neurology</option>
-            <option value="Dermatology">Dermatology</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label><i class="fas fa-clock"></i> Availability</label>
-          <select id="availabilityFilter" onchange="filterResults()">
-            <option value="any">Any Availability</option>
-            <option value="open">Open Now</option>
-            <option value="closed">Closed</option>
-            <option value="24/7">24/7</option>
-          </select>
+        <div class="filters-wrapper">
+          <div class="filter-group">
+            <label><i class="fas fa-hospital"></i> Facility Type</label>
+            <select id="facilityFilter" onchange="filterResults()">
+              <option value="all">All Facilities</option>
+              <option value="hospital">Hospitals</option>
+              <option value="clinic">Clinics</option>
+              <option value="specialists">Specialists</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label><i class="fas fa-user-md"></i> Specialization</label>
+            <select id="specializationFilter" onchange="filterResults()">
+              <option value="all">All Specializations</option>
+              <option value="pediatrics">Pediatrics</option>
+              <option value="cardiology">Cardiology</option>
+              <option value="neurology">Neurology</option>
+              <option value="dermatology">Dermatology</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label><i class="fas fa-clock"></i> Availability</label>
+            <select id="availabilityFilter" onchange="filterResults()">
+              <option value="any">Any Time</option>
+              <option value="open">Open Now</option>
+              <option value="24/7">24/7</option>
+            </select>
+          </div>
         </div>
       </div>
     </section>
@@ -387,49 +1005,64 @@
           </button>
         </div>
       </div>
+      <div id="hospital-list" class="hospital-list"></div>
     </section>
 
     <!-- Results Section -->
     <section class="results-section">
-      <h2><i class="fas fa-list"></i> Available Healthcare Facilities</h2>
-      <div class="results-grid">
-        <div class="facility-card">
-          <div class="facility-image">
-            <img src="images/hospital1.jpg" alt="City Hospital">
-            <span class="status open">Open Now</span>
-          </div>
-          <div class="facility-info">
-            <h3>City Hospital</h3>
-            <p><i class="fas fa-map-marker-alt"></i> 2.5 km away</p>
-            <p><i class="fas fa-clock"></i> 24/7</p>
-            <div class="facility-tags">
-              <span>Emergency Care</span>
-              <span>Pediatrics</span>
-              <span>Cardiology</span>
+      <div class="results-container">
+        <h2 class="section-title"><i class="fas fa-list"></i> Available Healthcare Facilities</h2>
+        <div class="results-grid">
+          <div class="facility-card">
+            <div class="facility-image">
+              <img src="images/hospital1.jpg" alt="City Hospital">
+              <div class="facility-badge">
+                <span class="status open"><i class="fas fa-check-circle"></i> Open Now</span>
+                <span class="distance"><i class="fas fa-map-marker-alt"></i> 2.5 km</span>
+              </div>
             </div>
-            <div class="facility-actions">
-              <a href="#" class="book-btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
-              <a href="#" class="directions-btn"><i class="fas fa-directions"></i> Get Directions</a>
+            <div class="facility-info">
+              <h3>City Hospital</h3>
+              <div class="info-row">
+                <span><i class="fas fa-clock"></i> 24/7</span>
+                <span><i class="fas fa-phone"></i> +1 234 567 890</span>
+              </div>
+              <div class="facility-tags">
+                <span class="tag emergency">Emergency Care</span>
+                <span class="tag">Pediatrics</span>
+                <span class="tag">Cardiology</span>
+              </div>
+              <p class="address"><i class="fas fa-location-dot"></i> 123 Healthcare Ave, Medical City</p>
+              <div class="facility-actions">
+                <a href="#" class="action-btn book-btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+                <a href="#" class="action-btn directions-btn"><i class="fas fa-directions"></i> Get Directions</a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="facility-card">
-          <div class="facility-image">
-            <img src="images/clinic1.jpg" alt="Green Care Clinic">
-            <span class="status closed">Closed</span>
-          </div>
-          <div class="facility-info">
-            <h3>Green Care Clinic</h3>
-            <p><i class="fas fa-map-marker-alt"></i> 1.2 km away</p>
-            <p><i class="fas fa-clock"></i> 9 AM - 8 PM</p>
-            <div class="facility-tags">
-              <span>General Medicine</span>
-              <span>Dermatology</span>
+          <div class="facility-card">
+            <div class="facility-image">
+              <img src="images/clinic1.jpg" alt="Green Care Clinic">
+              <div class="facility-badge">
+                <span class="status closed"><i class="fas fa-times-circle"></i> Closed</span>
+                <span class="distance"><i class="fas fa-map-marker-alt"></i> 1.2 km</span>
+              </div>
             </div>
-            <div class="facility-actions">
-              <a href="#" class="book-btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
-              <a href="#" class="directions-btn"><i class="fas fa-directions"></i> Get Directions</a>
+            <div class="facility-info">
+              <h3>Green Care Clinic</h3>
+              <div class="info-row">
+                <span><i class="fas fa-clock"></i> 9 AM - 8 PM</span>
+                <span><i class="fas fa-phone"></i> +1 234 567 891</span>
+              </div>
+              <div class="facility-tags">
+                <span class="tag">General Medicine</span>
+                <span class="tag">Dermatology</span>
+              </div>
+              <p class="address"><i class="fas fa-location-dot"></i> 456 Wellness Blvd, Medical District</p>
+              <div class="facility-actions">
+                <a href="#" class="action-btn book-btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+                <a href="#" class="action-btn directions-btn"><i class="fas fa-directions"></i> Get Directions</a>
+              </div>
             </div>
           </div>
         </div>
@@ -439,170 +1072,529 @@
     <!-- Emergency Section -->
     <section class="emergency-section">
       <div class="emergency-content">
-        <h2><i class="fas fa-ambulance"></i> Need Emergency Care?</h2>
-        <p>Find the nearest emergency room or call for an ambulance</p>
-        <div class="emergency-actions">
-          <a href="#" class="emergency-btn primary">
-            <i class="fas fa-hospital"></i> Find Emergency Room
+          <h2 class="emergency-title">Need Emergency Assistance?</h2>
+          <p>Our emergency support team is available 24/7 to help you</p>
+          <a href="tel:911" class="emergency-call-btn">
+              <i class="fas fa-phone"></i> Call Emergency Services
           </a>
-          <a href="tel:108" class="emergency-btn secondary">
-            <i class="fas fa-phone"></i> Call Ambulance (108)
-          </a>
-        </div>
       </div>
     </section>
-  </main>
+</main>
 
-  <div class="scroll-top">
-    <i class="fas fa-arrow-up"></i>
+<footer class="footer">
+  <div class="footer-container">
+      <div class="footer-content">
+          <div class="footer-section">
+              <h2>About HealthConnect</h2>
+              <p>Your trusted partner in healthcare, providing accessible and quality medical services to everyone.</p>
+              <div class="social-icons">
+                  <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                  <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                  <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                  <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+              </div>
+          </div>
+          <div class="footer-section">
+              <h2>Quick Links</h2>
+              <ul>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="Find Healthcare.html">Find Healthcare</a></li>
+                  <li><a href="Self-Care Resources.html">Self-Care Resources</a></li>
+                  <li><a href="Doctor.html">Consult Doctor</a></li>
+                  <li><a href="About us.html">About Us</a></li>
+                  <li><a href="Contact us.html">Contact Us</a></li>
+              </ul>
+          </div>
+          <div class="footer-section">
+              <h2>Contact Info</h2>
+              <ul>
+                  <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, Medical City</li>
+                  <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                  <li><i class="fas fa-envelope"></i> info@healthconnect.com</li>
+              </ul>
+          </div>
+      </div>
+      <div class="footer-bottom">
+          <div class="footer-logo">
+              <img src="images/logo.png" alt="HealthConnect Logo">
+              <span>© 2024 HealthConnect. All rights reserved.</span>
+          </div>
+          <div class="footer-links">
+              <a href="#">Terms & Conditions</a>
+              <span>|</span>
+              <a href="#">Privacy Policy</a>
+              <span>|</span>
+              <a href="#">Payment Policy</a>
+          </div>
+      </div>
   </div>
+  <button class="scroll-top">
+      <i class="fas fa-arrow-up"></i>
+  </button>
+</footer>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="social-icons">
-        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
-        <p class="copyright">©2024 HealthConnect. All Rights Reserved.</p>
-      </div>
-
-      <div class="footer-right">
-        <p>Developed and Maintained by <b>Health Connect</b></p>
-        <img src="images/logo.png" alt="Company Logo">
-      </div>
-    </div>
-
-    <a href="#emergencyModal" class="emergency-btn">
-      <i class="fas fa-ambulance"></i> Emergency
-    </a>
-
-    <div id="emergencyModal" class="modal">
-      <div class="modal-content">
-        <a href="#" class="close-btn">&times;</a>
-        <h3><i class="fas fa-phone-alt"></i> Emergency Contacts</h3>
-        <div class="emergency-contacts">
-          <div class="contact-item">
-            <i class="fas fa-ambulance"></i>
-            <p>Ambulance: <a href="tel:108">108</a></p>
-          </div>
-          <div class="contact-item">
-            <i class="fas fa-shield-alt"></i>
-            <p>Police: <a href="tel:100">100</a></p>
-          </div>
-          <div class="contact-item">
-            <i class="fas fa-fire"></i>
-            <p>Fire: <a href="tel:101">101</a></p>
-          </div>
-          <div class="contact-item">
-            <i class="fas fa-user-md"></i>
-            <p>Medical Helpline: <a href="tel:102">102</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-links">
-      <a href="#" target="_blank">Terms & Conditions</a>
-      <span>|</span>
-      <a href="#" target="_blank">Privacy Policy</a>
-      <span>|</span>
-      <a href="#" target="_blank">Payment Policy</a>
-    </div>
-  </footer>
-
-  <script>
-    // Mobile Navigation Toggle
-    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-    const navbar = document.querySelector('.navbar');
-    
-    mobileNavToggle.addEventListener('click', () => {
-      navbar.classList.toggle('active');
-    });
-
-    // Scroll to Top Button
-    const scrollTopBtn = document.querySelector('.scroll-top');
-    
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        scrollTopBtn.classList.add('visible');
-      } else {
-        scrollTopBtn.classList.remove('visible');
-      }
-    });
-
-    scrollTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!navbar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
-        navbar.classList.remove('active');
-      }
-    });
-
-    // Initialize Google Maps
-    function initMap() {
-      const map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 23.0225, lng: 72.5714 }, // Ahmedabad, India
-        zoom: 12
-      });
-
-      // Add markers for healthcare facilities
-      const facilities = [
-        { name: 'City Hospital', position: { lat: 23.0225, lng: 72.5714 } },
-        { name: 'Green Care Clinic', position: { lat: 23.0325, lng: 72.5814 } }
-      ];
-
-      facilities.forEach(facility => {
-        new google.maps.Marker({
-          position: facility.position,
-          map: map,
-          title: facility.name,
-          icon: {
-            url: 'images/hospital-marker.png',
-            scaledSize: new google.maps.Size(30, 30)
-          }
-        });
-      });
+<style>
+    .footer {
+        background-color: #1a237e;
+        color: #ffffff;
+        padding: 4rem 0 2rem;
+        position: relative;
     }
 
-    // Get current location
-    function getCurrentLocation() {
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4rem;
+        margin-bottom: 3rem;
+    }
+
+    .footer-section h2 {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+
+    .footer-section p {
+        color: #ffffff;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+    }
+
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 1rem;
+    }
+
+    .footer-section ul li a {
+        color: #ffffff;
+        text-decoration: none;
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+    }
+
+    .footer-section ul li a:hover {
+        opacity: 1;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .social-icons a {
+        color: #ffffff;
+        font-size: 1.5rem;
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        opacity: 1;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .footer-logo img {
+        width: 40px;
+        height: auto;
+    }
+
+    .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .footer-links a {
+        color: #ffffff;
+        text-decoration: none;
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        opacity: 1;
+    }
+
+    .footer-links span {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .scroll-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: #ffffff;
+        color: #1a237e;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .scroll-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .scroll-top:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .footer-section {
+            align-items: center;
+        }
+
+        .social-icons {
+            justify-content: center;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .footer-links {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+</style>
+
+<script>
+  // Mobile Navigation Toggle
+  const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  const navbar = document.querySelector('.navbar');
+  
+  mobileNavToggle.addEventListener('click', () => {
+    navbar.classList.toggle('active');
+  });
+
+  // Scroll to Top Button
+  const scrollTopBtn = document.querySelector('.scroll-top');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!navbar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+      navbar.classList.remove('active');
+    }
+  });
+
+  let map;
+  let userMarker;
+  let hospitalMarkers = [];
+  let directionsService;
+  let directionsRenderer;
+  const hospitals = [
+      {
+          name: 'City Hospital',
+          position: { lat: 23.0225, lng: 72.5714 },
+          address: '123 Healthcare Ave, Medical City',
+          phone: '+1 234 567 890',
+          status: 'open',
+          specialties: ['Emergency Care', 'Surgery', 'Pediatrics']
+      },
+      {
+          name: 'Green Care Clinic',
+          position: { lat: 23.0325, lng: 72.5814 },
+          address: '456 Wellness Blvd, Medical District',
+          phone: '+1 234 567 891',
+          status: 'open',
+          specialties: ['General Medicine', 'Dermatology']
+      },
+      // Add more hospitals as needed
+  ];
+
+  function initMap() {
+      directionsService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({
+          suppressMarkers: true,
+          polylineOptions: {
+              strokeColor: '#1a237e',
+              strokeWeight: 5
+          }
+      });
+
+      map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: 23.0225, lng: 72.5714 },
+          zoom: 12,
+          styles: [
+              {
+                  featureType: 'poi.medical',
+                  stylers: [{ visibility: 'on' }]
+              }
+          ]
+      });
+
+      directionsRenderer.setMap(map);
+      
+      // Initially place hospital markers
+      hospitals.forEach(hospital => addHospitalMarker(hospital));
+      updateHospitalList();
+  }
+
+  function getCurrentLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const map = new google.maps.Map(document.getElementById('map'), {
-              center: { lat: position.coords.latitude, lng: position.coords.longitude },
-              zoom: 15
-            });
-          },
-          error => {
-            alert('Error getting location: ' + error.message);
-          }
-        );
+          navigator.geolocation.getCurrentPosition(
+              position => {
+                  const userLocation = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                  };
+
+                  // Update user marker
+                  if (userMarker) userMarker.setMap(null);
+                  userMarker = new google.maps.Marker({
+                      position: userLocation,
+                      map: map,
+                      icon: {
+                          url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                          scaledSize: new google.maps.Size(32, 32)
+                      },
+                      title: 'Your Location'
+                  });
+
+                  map.setCenter(userLocation);
+                  map.setZoom(13);
+
+                  // Hide location prompt
+                  document.getElementById('locationPrompt').style.display = 'none';
+                  hasLocation = true;
+
+                  // Find nearby hospitals
+                  findNearbyHospitals(userLocation);
+                  updateDistances(userLocation);
+              },
+              error => {
+                  alert('Error getting location: ' + error.message);
+              }
+          );
       } else {
-        alert('Geolocation is not supported by your browser.');
+          alert('Geolocation is not supported by your browser.');
       }
+  }
+
+  function addHospitalMarker(hospital) {
+      const marker = new google.maps.Marker({
+          position: hospital.position,
+          map: map,
+          title: hospital.name,
+          icon: {
+              url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+              scaledSize: new google.maps.Size(32, 32)
+          }
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+          content: `
+              <div class="info-window">
+                  <h3>${hospital.name}</h3>
+                  <p>${hospital.address}</p>
+                  <p>Phone: ${hospital.phone}</p>
+                  <p>Status: ${hospital.status === 'open' ? 'Open' : 'Closed'}</p>
+              </div>
+          `
+      });
+
+      marker.addListener('click', () => {
+          infoWindow.open(map, marker);
+          showRoute(hospital);
+      });
+
+      hospitalMarkers.push({ marker, hospital });
+  }
+
+  function updateDistances(userLocation) {
+      hospitalMarkers.forEach(({ marker, hospital }) => {
+          const distance = google.maps.geometry.spherical.computeDistanceBetween(
+              new google.maps.LatLng(userLocation),
+              marker.getPosition()
+          );
+          hospital.distance = (distance / 1000).toFixed(1); // Convert to kilometers
+      });
+
+      updateHospitalList();
+  }
+
+  function showRoute(hospital) {
+      if (!userMarker) {
+          alert('Please share your location first');
+          return;
+      }
+
+      const request = {
+          origin: userMarker.getPosition(),
+          destination: hospital.position,
+          travelMode: 'DRIVING'
+      };
+
+      directionsService.route(request, (result, status) => {
+          if (status === 'OK') {
+              directionsRenderer.setDirections(result);
+              
+              // Update distance and time info
+              const route = result.routes[0];
+              const distance = route.legs[0].distance.text;
+              const duration = route.legs[0].duration.text;
+              
+              document.querySelectorAll('.hospital-card').forEach(card => {
+                  card.classList.remove('active');
+                  if (card.dataset.name === hospital.name) {
+                      card.classList.add('active');
+                      card.querySelector('.distance-badge').textContent = 
+                          `${distance} (${duration} by car)`;
+                  }
+              });
+          }
+      });
+  }
+
+  function updateHospitalList() {
+      const listContainer = document.getElementById('hospital-list');
+      listContainer.innerHTML = '';
+
+      const sortedHospitals = [...hospitalMarkers]
+          .sort((a, b) => (a.hospital.distance || 0) - (b.hospital.distance || 0));
+
+      sortedHospitals.forEach(({ hospital }) => {
+          const card = document.createElement('div');
+          card.className = 'hospital-card';
+          card.dataset.name = hospital.name;
+          card.innerHTML = `
+              <div class="hospital-name">${hospital.name}</div>
+              <div class="hospital-info">${hospital.address}</div>
+              <div class="hospital-status">
+                  <span class="status-indicator status-${hospital.status}"></span>
+                  ${hospital.status === 'open' ? 'Open' : 'Closed'}
+              </div>
+              <div class="distance-badge">
+                  ${hospital.distance ? hospital.distance + ' km' : 'Calculate distance...'}
+              </div>
+          `;
+          card.onclick = () => showRoute(hospital);
+          listContainer.appendChild(card);
+      });
+  }
+
+  // Filter results
+  function filterResults() {
+    const facilityType = document.getElementById('facilityFilter').value;
+    const specialization = document.getElementById('specializationFilter').value;
+    const availability = document.getElementById('availabilityFilter').value;
+
+    // Add your filtering logic here
+    console.log('Filtering results:', { facilityType, specialization, availability });
+  }
+
+  let hasLocation = false;
+
+  function searchHospital() {
+    if (!hasLocation) {
+        alert('Please click "Use My Location" first to find nearby hospitals');
+        return;
     }
+    
+    const searchInput = document.getElementById('hospitalSearch');
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    // Clear previous search results
+    hospitalMarkers.forEach(({ marker }) => {
+        marker.setVisible(false);
+    });
+    
+    // Filter hospitals based on search term
+    hospitalMarkers.forEach(({ marker, hospital }) => {
+        const hospitalName = hospital.name.toLowerCase();
+        if (hospitalName.includes(searchTerm)) {
+            marker.setVisible(true);
+            // Center map on the first matching hospital
+            if (hospitalMarkers.find(({ hospital: h }) => h.name.toLowerCase().includes(searchTerm))?.hospital === hospital) {
+                map.setCenter(marker.getPosition());
+                map.setZoom(13);
+            }
+        }
+    });
+    
+    updateHospitalList();
+  }
 
-    // Filter results
-    function filterResults() {
-      const facilityType = document.getElementById('facilityFilter').value;
-      const specialization = document.getElementById('specializationFilter').value;
-      const availability = document.getElementById('availabilityFilter').value;
-
-      // Add your filtering logic here
-      console.log('Filtering results:', { facilityType, specialization, availability });
-    }
-  </script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+  // Add event listeners when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('hospitalSearch');
+    const searchBtn = document.querySelector('.search-btn');
+    
+    searchInput.addEventListener('input', searchHospital);
+    searchBtn.addEventListener('click', searchHospital);
+    
+    // Add enter key support
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchHospital();
+        }
+    });
+  });
+</script>
 
 </body>
 
